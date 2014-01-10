@@ -10,6 +10,7 @@ namespace TOPT.NetworkSimulator.Program
   {
     static void Main( string[ ] args )
     {
+        //ścierwo
     }
   }
 }
