@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A349EB59-EFD4-4DF4-8150-0D5F1F4A2506}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{EB1A781B-E9EE-4837-A7C4-452CF0805C0E}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TOPT.NetworkSimulator.Program</RootNamespace>
-    <AssemblyName>TOPT.NetworkSimulator.Program</AssemblyName>
+    <RootNamespace>TOPT.NetworkSimulator.Routing</RootNamespace>
+    <AssemblyName>TOPT.NetworkSimulator.Routing</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,17 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Collections\PriorityQueue.cs" />
+    <Compile Include="Digraph.cs" />
+    <Compile Include="DijkstraSP.cs" />
+    <Compile Include="DirectedEdge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TOPT.NetworkSimulator.Routing\TOPT.NetworkSimulator.Routing.csproj">
-      <Project>{eb1a781b-e9ee-4837-a7c4-452cf0805c0e}</Project>
-      <Name>TOPT.NetworkSimulator.Routing</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
