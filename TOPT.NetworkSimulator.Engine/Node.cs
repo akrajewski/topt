@@ -7,7 +7,7 @@ using TOPT.NetworkSimulator.Routing;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    class Node : ISimulationObject, IReceivable, IRouter
+    public class Node : ISimulationObject, IReceivable, IRouter
     {
         public static StatisticsManager statistics { get; set; }
         private static int nodeIdGenerator = 0;
@@ -20,7 +20,7 @@ namespace TOPT.NetworkSimulator.Engine
         public Link egressHorizontalLink { get; set; }
         public Link egressVerticalLink { get; set; }
 
-        NodePort localPort = null;
+        public NodePort localPort { get; set; }
 
         NodeQueue queue = null;
 
@@ -32,6 +32,11 @@ namespace TOPT.NetworkSimulator.Engine
 
         public void ReceivePacket(Packet packet)
         {
+            if (packet.sourceId != Id) //increase hop counter unless packet originates from this node
+            {
+                packet.IncreaseHopCounter();
+            }
+
             //receive a packet on one of the ingress vertical links or on a local port
             //put it into the queue
             packet = queue.AddToQueue(packet);
@@ -44,18 +49,25 @@ namespace TOPT.NetworkSimulator.Engine
 
         public void PerformSimulationStep()
         {
+            queue.IncreasePacketsLatency();
+
             //take last packet from queue
             Packet packet = queue.Dequeue();
 
-            //check if packet's destination id is equal to this node's id
-            //if yes hand it over to the local port
-         
-
-            //map it on forwarding table
-            //send it using ReceivePacket method on a proper egress link
-            this.OutgoingLink(packet.destinationId, packet.sourceId).ReceivePacket(packet);
-
-            throw new NotImplementedException();
+            if (packet != null)
+            {
+                //check if packet's destination id is equal to this node's id
+                if (packet.destinationId == Id) //if yes hand it over to the local port
+                {
+                    localPort.ReceivePacket(packet);
+                }
+                else //if not
+                {
+                    //map it on forwarding table &
+                    //send it using ReceivePacket method on a proper egress link
+                    this.OutgoingLink(packet.destinationId, packet.sourceId).ReceivePacket(packet);
+                }
+            }
         }
 
         public override string ToString()

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    class Scheduler
+    public class Scheduler
     {
         Network network = null;
 
@@ -21,6 +21,11 @@ namespace TOPT.NetworkSimulator.Engine
         {
             for (currentSimulationTime = 0; currentSimulationTime < simulationPeriod; ++currentSimulationTime)
             {
+                foreach (TrafficGenerator tg in network.trafficGenerators)
+                {
+                    tg.PerformSimulationStep();
+                }
+
                 foreach (Node n in network.networkNodes)
                 {
                     n.PerformSimulationStep();

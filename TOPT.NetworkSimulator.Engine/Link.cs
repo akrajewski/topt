@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    class Link : ISimulationObject, IReceivable
+    public class Link : ISimulationObject, IReceivable
     {
         private static int linkIdGenerator = 0;
 
@@ -39,7 +39,12 @@ namespace TOPT.NetworkSimulator.Engine
 
         public void PerformSimulationStep()
         {
-            linkDestinationNode.ReceivePacket(lastStepPacket);
+            if (lastStepPacket != null) 
+            {
+                lastStepPacket.IncreaseLatencyCounter(); //currentStepPacket has already had its latency increased
+
+                linkDestinationNode.ReceivePacket(lastStepPacket);
+            }
 
             lastStepPacket = currentStepPacket;
 

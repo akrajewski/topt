@@ -6,12 +6,21 @@ using System.Threading.Tasks;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    class Packet
+    public class Packet
     {
         public int destinationId { get; set; }
         public int sourceId { get; set; }
 
+        int hops = 0;
+        int latency = 0;
+
         String traceroute = "";
+
+        public Packet(int sourceId, int destinationId)
+        {
+            this.sourceId = sourceId;
+            this.destinationId = destinationId;
+        }
 
         public void AddToTraceroute(int id, bool isNode)
         {
@@ -24,6 +33,15 @@ namespace TOPT.NetworkSimulator.Engine
                 traceroute += "l" + id + ";";
             }
         }
-        
+
+        public void IncreaseHopCounter()
+        {
+            hops++;
+        }
+
+        public void IncreaseLatencyCounter()
+        {
+            latency++;
+        }
     }
 }

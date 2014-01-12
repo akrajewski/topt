@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    class NodePort : IReceivable
+    public class NodePort : IReceivable
     {
         public static StatisticsManager statistics { get; set; }
         Node node = null;
+
+        public NodePort(Node node)
+        {
+            this.node = node;
+        }
 
         public void ReceivePacket(Packet packet)
         {
@@ -23,8 +28,6 @@ namespace TOPT.NetworkSimulator.Engine
                 //otherwise packet should be handed over to the node
                 node.ReceivePacket(packet);
             }
-
-            throw new NotImplementedException();
         }
     }
 }

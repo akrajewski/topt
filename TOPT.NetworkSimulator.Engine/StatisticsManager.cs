@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    class StatisticsManager
+    public class StatisticsManager
     {
         List<PacketListElement> packetList = new List<PacketListElement>();
 
@@ -16,7 +16,7 @@ namespace TOPT.NetworkSimulator.Engine
         }
     }
 
-    private class PacketListElement
+    public class PacketListElement
     {
         public Packet packet { get; set; }
         public PacketState state { get; set; }
@@ -28,7 +28,7 @@ namespace TOPT.NetworkSimulator.Engine
         }
     }
 
-    enum PacketState //nie mam pomyslu na lepsza nazwe
+    public enum PacketState //nie mam pomyslu na lepsza nazwe
     {
         DELIVERED_SUCCESSFULLY,
         DROPPED

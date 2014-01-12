@@ -11,8 +11,9 @@ namespace TOPT.NetworkSimulator.Engine
     {
         public List<Node> networkNodes { get; set; }
         public List<Link> networkLinks { get; set; }
+        public List<TrafficGenerator> trafficGenerators { get; set; }
 
-        public Network(int networkSize, int queueSize)
+        public Network(int networkSize, int queueSize, double packetGenerationRate)
         {
             NodeQueue.size = queueSize;
 
@@ -20,7 +21,27 @@ namespace TOPT.NetworkSimulator.Engine
             networkNodes = new List<Node>();
             networkLinks = new List<Link>();
 
+            trafficGenerators = new List<TrafficGenerator>();
+
             GenerateNetwork(networkSize);
+
+            TrafficGenerator.packetGenerator = new PacketGenerator(networkNodes.Count);
+
+            ConnectTrafficGenerators(packetGenerationRate);
+        }
+
+        private void ConnectTrafficGenerators(double packetGenerationRate)
+        {
+            NodePort localPort = null;
+            foreach (Node n in networkNodes)
+            {
+                localPort = new NodePort(n); //create node port
+
+                n.localPort = localPort; //connect node port to node
+
+                trafficGenerators.Add(new TrafficGenerator(localPort, n, packetGenerationRate));
+                    //connect traffic generator to node port
+            }
         }
 
         public override string ToString()
@@ -157,12 +178,10 @@ namespace TOPT.NetworkSimulator.Engine
             if (parameter % 2 == 0)
             {
                 return true;
-                //return false;
             }
             else
             {
                 return false;
-                //return true;
             }
         }
 

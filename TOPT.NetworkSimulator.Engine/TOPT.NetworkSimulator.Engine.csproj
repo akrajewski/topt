@@ -46,6 +46,7 @@
     <Compile Include="ISimulationObject.cs" />
     <Compile Include="NodePort.cs" />
     <Compile Include="Packet.cs" />
+    <Compile Include="PacketGenerator.cs" />
     <Compile Include="StatisticsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NodeQueue.cs" />

@@ -21,5 +21,13 @@ namespace TOPT.NetworkSimulator.Engine
                 return packet;
             }
         }
+
+        public void IncreasePacketsLatency()
+        {
+            foreach (Packet p in this)
+            {
+                p.IncreaseLatencyCounter();
+            }
+        }
     }
 }
