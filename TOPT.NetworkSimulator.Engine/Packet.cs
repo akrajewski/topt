@@ -24,7 +24,7 @@ namespace TOPT.NetworkSimulator.Engine
 
         public override string ToString()
         {
-            return "[PACKET " + sourceId + " -> " + destinationId + " trace: " + traceroute + "]";
+            return "[PACKET " + sourceId + " -> " + destinationId + " trace: " + traceroute + " hops: " + hops + " latency: " + latency + "]";
         }
 
         public void AddToTraceroute(int id, bool isNode)
