@@ -13,9 +13,12 @@ namespace TOPT.NetworkSimulator.Engine
         public List<Link> networkLinks { get; set; }
         public List<TrafficGenerator> trafficGenerators { get; set; }
 
-        public Network(int networkSize, int queueSize, double packetGenerationRate)
+        public int packetsInNetwork { get; set; }
+
+        public Network(int networkSize, int queueSize, double packetGenerationRate, int numberOfPacketsToGenerate)
         {
             NodeQueue.size = queueSize;
+            packetsInNetwork = 0;
 
             //network generation
             networkNodes = new List<Node>();
@@ -25,7 +28,8 @@ namespace TOPT.NetworkSimulator.Engine
 
             GenerateNetwork(networkSize);
 
-            TrafficGenerator.packetGenerator = new PacketGenerator(networkNodes.Count);
+            TrafficGenerator.packetGenerator = new PacketGenerator(this);
+            TrafficGenerator.numberOfPacketsToGenerate = numberOfPacketsToGenerate;
 
             ConnectTrafficGenerators(packetGenerationRate);
         }

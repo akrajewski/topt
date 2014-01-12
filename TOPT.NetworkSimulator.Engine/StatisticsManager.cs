@@ -9,10 +9,17 @@ namespace TOPT.NetworkSimulator.Engine
     public class StatisticsManager
     {
         List<PacketListElement> packetList = new List<PacketListElement>();
+        Network network = null;
+
+        public StatisticsManager(Network network)
+        {
+            this.network = network;
+        }
 
         public void AddPacketToStatistics(Packet packet, PacketState state) 
         {
             packetList.Add(new PacketListElement(packet, state));
+            network.packetsInNetwork--;
         }
 
         public override string ToString()
@@ -31,7 +38,7 @@ namespace TOPT.NetworkSimulator.Engine
             return sb.ToString();
         }
 
-        private String GetStatistics()
+        public String GetStatistics()
         {
             double avg_hops = 0;
             double avg_latency = 0;

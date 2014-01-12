@@ -11,10 +11,13 @@ namespace TOPT.NetworkSimulator.Engine
         Random rnd = null;
         int numberOfNodes = 0;
 
-        public PacketGenerator(int numberOfNodes)
+        Network network = null;
+
+        public PacketGenerator(Network network)
         {
             rnd = new Random();
-            this.numberOfNodes = numberOfNodes;
+            this.numberOfNodes = network.networkNodes.Count;
+            this.network = network;
         }
 
         public Packet GenerateRandomPacket(int sourceId)
@@ -25,6 +28,8 @@ namespace TOPT.NetworkSimulator.Engine
             {
                 destinationId = rnd.Next(0, numberOfNodes); //random number from 0 to numberOfNodes-1
             } while (destinationId == sourceId);
+
+            network.packetsInNetwork++;
 
             return new Packet(sourceId, destinationId);
         }

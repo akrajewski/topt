@@ -17,9 +17,13 @@ namespace TOPT.NetworkSimulator.Engine
             this.network = network;
         }
 
-        public void PerformSimulation(int simulationPeriod)
+        public void PerformSimulation(/*int simulationPeriod*/)
         {
-            for (currentSimulationTime = 0; currentSimulationTime < simulationPeriod; ++currentSimulationTime)
+          
+            //for (currentSimulationTime = 0; currentSimulationTime < simulationPeriod; ++currentSimulationTime)
+            //{
+
+            do
             {
                 foreach (TrafficGenerator tg in network.trafficGenerators)
                 {
@@ -35,7 +39,7 @@ namespace TOPT.NetworkSimulator.Engine
                 {
                     l.PerformSimulationStep();
                 }
-            }
+            } while (network.packetsInNetwork != 0);
         }
     }
 }

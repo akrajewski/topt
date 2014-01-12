@@ -22,7 +22,7 @@ namespace TOPT.NetworkSimulator.Program
 
         private static void EngineTests()
         {
-            Network net = new Network(3, 0, 1.0);
+            Network net = new Network(3, 0, 1.0, 10);
             Console.Write(net.ToString());
             Console.ReadKey();
         }
@@ -70,19 +70,20 @@ namespace TOPT.NetworkSimulator.Program
 
         public static void RoutingTests(string[] args)
         {
-            var statistics = new StatisticsManager();
-            Node.statistics = statistics;
-            NodePort.statistics = statistics;
 
-            var network = new Network(4, 10, 1.0);
+            var network = new Network(4, 10, 1.0, 10);
             var pce = new PCE(network, PCE.RoutingAlgorithm.ShortestPaths);
             pce.Compute();
             var scheduler = new Scheduler(network);
 
+            var statistics = new StatisticsManager(network);
+            Node.statistics = statistics;
+            NodePort.statistics = statistics;
+
             Console.WriteLine(network.ToString());
             Console.ReadKey();
 
-            scheduler.PerformSimulation(10);
+            scheduler.PerformSimulation();
 
             Console.WriteLine(statistics);
             Console.ReadKey();
