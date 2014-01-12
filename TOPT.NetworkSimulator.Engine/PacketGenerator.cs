@@ -19,7 +19,14 @@ namespace TOPT.NetworkSimulator.Engine
 
         public Packet GenerateRandomPacket(int sourceId)
         {
-            return new Packet(sourceId, rnd.Next(1, randomIdTopBoundry));
+            int destinationId = -1;
+
+            do
+            {
+                destinationId = rnd.Next(0, randomIdTopBoundry);
+            } while (destinationId == sourceId);
+
+            return new Packet(sourceId, destinationId);
         }
     }
 }

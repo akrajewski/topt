@@ -28,6 +28,8 @@ namespace TOPT.NetworkSimulator.Engine
         {
             this.Id = nodeIdGenerator++; //generating new Id
             this.RoutingTable = new RoutingTable();
+
+            queue = new NodeQueue();
         }
 
         public void ReceivePacket(Packet packet)
@@ -36,6 +38,8 @@ namespace TOPT.NetworkSimulator.Engine
             {
                 packet.IncreaseHopCounter();
             }
+
+            packet.AddToTraceroute(Id, true);
 
             //receive a packet on one of the ingress vertical links or on a local port
             //put it into the queue
@@ -52,7 +56,7 @@ namespace TOPT.NetworkSimulator.Engine
             queue.IncreasePacketsLatency();
 
             //take last packet from queue
-            Packet packet = queue.Dequeue();
+            Packet packet = queue.GetPacketFromQueue();
 
             if (packet != null)
             {

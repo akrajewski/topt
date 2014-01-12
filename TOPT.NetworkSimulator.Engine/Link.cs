@@ -42,6 +42,7 @@ namespace TOPT.NetworkSimulator.Engine
             if (lastStepPacket != null) 
             {
                 lastStepPacket.IncreaseLatencyCounter(); //currentStepPacket has already had its latency increased
+                lastStepPacket.AddToTraceroute(linkId, false);
 
                 linkDestinationNode.ReceivePacket(lastStepPacket);
             }

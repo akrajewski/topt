@@ -70,10 +70,21 @@ namespace TOPT.NetworkSimulator.Program
 
         public static void RoutingTests(string[] args)
         {
-            var network = new Network(3, 0, 1.0);
+            var statistics = new StatisticsManager();
+            Node.statistics = statistics;
+            NodePort.statistics = statistics;
+
+            var network = new Network(3, 3, 1.0);
             var pce = new PCE(network, PCE.RoutingAlgorithm.ShortestPaths);
             pce.Compute();
+            var scheduler = new Scheduler(network);
+
             Console.WriteLine(network.ToString());
+            Console.ReadKey();
+
+            scheduler.PerformSimulation(10);
+
+            Console.WriteLine(statistics);
             Console.ReadKey();
         }
     }

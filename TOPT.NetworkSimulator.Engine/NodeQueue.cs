@@ -22,6 +22,18 @@ namespace TOPT.NetworkSimulator.Engine
             }
         }
 
+        public Packet GetPacketFromQueue()
+        {
+            if (this.Count != 0)
+            {
+                return this.Dequeue();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void IncreasePacketsLatency()
         {
             foreach (Packet p in this)

@@ -14,6 +14,19 @@ namespace TOPT.NetworkSimulator.Engine
         {
             packetList.Add(new PacketListElement(packet, state));
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (PacketListElement p in packetList)
+            {
+                sb.Append(p.packet.ToString());
+                sb.Append(" ");
+                sb.AppendLine(Enum.GetName(typeof(PacketState), p.state));
+            }
+            return sb.ToString();
+        }
     }
 
     public class PacketListElement
@@ -27,6 +40,8 @@ namespace TOPT.NetworkSimulator.Engine
             this.state = state;
         }
     }
+
+    
 
     public enum PacketState //nie mam pomyslu na lepsza nazwe
     {

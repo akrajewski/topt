@@ -22,15 +22,20 @@ namespace TOPT.NetworkSimulator.Engine
             this.destinationId = destinationId;
         }
 
+        public override string ToString()
+        {
+            return "[PACKET " + sourceId + " -> " + destinationId + " trace: " + traceroute + "]";
+        }
+
         public void AddToTraceroute(int id, bool isNode)
         {
             if (isNode) //thats a node
             {
-                traceroute += "n" + id + ";";
+                traceroute += "n" + id + ">";
             }
             else //thats a link
             {
-                traceroute += "l" + id + ";";
+                traceroute += "l" + id + ">";
             }
         }
 
