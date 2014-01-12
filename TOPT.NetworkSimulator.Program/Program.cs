@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using TOPT.NetworkSimulator.Routing;
+using TOPT.NetworkSimulator.Engine;
 using System.Text.RegularExpressions;
 
 using TOPT.NetworkSimulator.Routing.Algorithms;
@@ -14,7 +16,15 @@ namespace TOPT.NetworkSimulator.Program
     {
         static void Main(string[] args)
         {
-            RoutingTests(args);
+            //RoutingTests(args);
+            EngineTests();
+        }
+
+        private static void EngineTests()
+        {
+            Network net = new Network(3, 0);
+            Console.Write(net.ToString());
+            Console.ReadKey();
         }
 
         private static void RoutingTests(string[] args)

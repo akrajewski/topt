@@ -48,6 +48,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TOPT.NetworkSimulator.Engine\TOPT.NetworkSimulator.Engine.csproj">
+      <Project>{35ded520-5cc3-446b-b182-dbfc882f57c9}</Project>
+      <Name>TOPT.NetworkSimulator.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TOPT.NetworkSimulator.Routing\TOPT.NetworkSimulator.Routing.csproj">
       <Project>{eb1a781b-e9ee-4837-a7c4-452cf0805c0e}</Project>
       <Name>TOPT.NetworkSimulator.Routing</Name>

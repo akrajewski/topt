@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    public class Class1
+    class Packet
     {
+        public int destinationId;
     }
 }
