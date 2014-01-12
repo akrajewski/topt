@@ -13,7 +13,7 @@ namespace TOPT.NetworkSimulator.Engine
         public void ReceivePacket(Packet packet)
         {
             //if the destinationId of the packet is equal to id of the node of the nodePort,
-            if (packet.destinationId == node.nodeId)
+            if (packet.destinationId == node.Id)
             {
                 //packet should be handed over to statistics (client).
             }

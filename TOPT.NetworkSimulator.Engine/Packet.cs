@@ -8,6 +8,7 @@ namespace TOPT.NetworkSimulator.Engine
 {
     class Packet
     {
-        public int destinationId;
+        public int destinationId { get; set; }
+        public int sourceId { get; set; }
     }
 }

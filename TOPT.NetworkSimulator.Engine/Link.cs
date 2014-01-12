@@ -33,7 +33,7 @@ namespace TOPT.NetworkSimulator.Engine
             {
                 throw new SystemException(
                     "CurrentStepPacket is not null in link destined for "
-                    + linkDestinationNode.nodeId);
+                    + linkDestinationNode.Id);
             }
         }
 
@@ -53,7 +53,7 @@ namespace TOPT.NetworkSimulator.Engine
 
         public override string ToString()
         {
-            return string.Format("[LINK " + linkId + ": destined for node {0}]", linkDestinationNode.nodeId);
+            return string.Format("[LINK " + linkId + ": destined for node {0}]", linkDestinationNode.Id);
         }
     }
 }

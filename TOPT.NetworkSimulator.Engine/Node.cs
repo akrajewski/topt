@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TOPT.NetworkSimulator.Routing;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    class Node : ISimulationObject, IReceivable
+    class Node : ISimulationObject, IReceivable, IRouter
     {
         private static int nodeIdGenerator = 0;
 
-        public int nodeId { get; private set; }
+        public int Id { get; private set; }
 
         public Link ingressHorizontalLink { get; set; }
         public Link ingressVerticalLink { get; set; }
@@ -24,7 +25,8 @@ namespace TOPT.NetworkSimulator.Engine
 
         public Node()
         {
-            this.nodeId = ++nodeIdGenerator; //generating new Id
+            this.Id = nodeIdGenerator++; //generating new Id
+            this.RoutingTable = new RoutingTable();
         }
 
         public void ReceivePacket(Packet packet)
@@ -41,20 +43,33 @@ namespace TOPT.NetworkSimulator.Engine
 
             //check if packet's destination id is equal to this node's id
             //if yes hand it over to the local port
+         
 
             //map it on forwarding table
             //send it using ReceivePacket method on a proper egress link
+            this.OutgoingLink(packet.destinationId, packet.sourceId).ReceivePacket(packet);
+
             throw new NotImplementedException();
         }
 
         public override string ToString()
         {
-            return "[NODE " + nodeId + ":\n\thorizontal links " +
+            return "[NODE " + Id + ":\n\thorizontal links " +
                 "\n\t\tingress " + ingressHorizontalLink +
                 "\n\t\tegress " + egressHorizontalLink +
                 "\n\tvertical links" +
                 "\n\t\tingress " + ingressVerticalLink +
-                "\n\t\tegress " + egressVerticalLink + "\n]";
+                "\n\t\tegress " + egressVerticalLink + 
+                "\n\troutingTable\n" + RoutingTable + "\n]";
         }
+
+        public RoutingTable RoutingTable { get; set; }
+
+        private Link OutgoingLink(int from, int to)
+        {
+            var nextHop = this.RoutingTable.NextHop(from, to);
+            return (egressHorizontalLink.linkDestinationNode.Id == nextHop) ? egressHorizontalLink : egressVerticalLink;
+        }
+
     }
 }

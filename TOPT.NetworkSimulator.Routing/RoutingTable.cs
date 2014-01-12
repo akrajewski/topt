@@ -8,16 +8,35 @@ namespace TOPT.NetworkSimulator.Routing
 {
     public class RoutingTable
     {
-        private Dictionary<int, int> entries = new Dictionary<int, int>();
+        private List<RoutingTableEntry> entries = new List<RoutingTableEntry>();
 
-        public void AddEntry(int to, int outputPort)
+        public void AddEntry(int from, int to, int nextHop)
         {
-            entries.Add(to, outputPort);
+            entries.Add(new RoutingTableEntry { From = from, To = to, NextHop = nextHop}); 
         }
 
-        public int OutputPort(int to)
+        public int NextHop(int from, int to)
         {
-            return entries[to];
+            return entries.First(entry => entry.From == from && entry.To == to).NextHop;
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            entries.ForEach(entry => builder.AppendLine("\t\t" + entry));
+            return (builder.Length != 0) ? builder.ToString() : "\t\tempty";
+        }
+
+        private class RoutingTableEntry
+        {
+            public int From { get; set; }
+            public int To { get; set; }
+            public int NextHop { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("From {0} To {1} Via {2}", this.From, this.To, this.NextHop);
+            }
         }
     }
 }

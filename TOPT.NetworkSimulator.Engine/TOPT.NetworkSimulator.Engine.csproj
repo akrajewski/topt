@@ -51,6 +51,12 @@
     <Compile Include="Scheduler.cs" />
     <Compile Include="TrafficGenerator.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TOPT.NetworkSimulator.Routing\TOPT.NetworkSimulator.Routing.csproj">
+      <Project>{eb1a781b-e9ee-4837-a7c4-452cf0805c0e}</Project>
+      <Name>TOPT.NetworkSimulator.Routing</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

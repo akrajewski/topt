@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TOPT.NetworkSimulator.Routing;
 
 namespace TOPT.NetworkSimulator.Engine
 {
-    public class Network
+    public class Network : IRoutableNetwork
     {
         List<Node> networkNodes = null;
         List<Link> networkLinks = null;
@@ -164,6 +165,23 @@ namespace TOPT.NetworkSimulator.Engine
                 return false;
                 //return true;
             }
+        }
+
+        public List<IRouter> Routers
+        {
+            get { return networkNodes.Select(node => node as IRouter).ToList(); }
+        }
+
+        public Routing.Algorithms.DirectedGraph ToGraph()
+        {
+            var graph = new Routing.Algorithms.DirectedGraph(this.networkNodes.Count);
+            foreach (var node in this.networkNodes)
+            {
+                var from = node.Id;
+                graph.AddEdge(from, node.egressHorizontalLink.linkDestinationNode.Id);
+                graph.AddEdge(from, node.egressVerticalLink.linkDestinationNode.Id);
+            }
+            return graph;
         }
     }
 }

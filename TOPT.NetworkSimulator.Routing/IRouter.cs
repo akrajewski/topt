@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TOPT.NetworkSimulator.Routing
 {
-    interface IRouter
+    public interface IRouter
     {
         RoutingTable RoutingTable { get; set; }
+        int Id { get; }
     }
 }

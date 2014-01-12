@@ -16,8 +16,8 @@ namespace TOPT.NetworkSimulator.Program
     {
         static void Main(string[] args)
         {
-            //RoutingTests(args);
-            EngineTests();
+            RoutingTests(args);
+            //EngineTests();
         }
 
         private static void EngineTests()
@@ -27,7 +27,7 @@ namespace TOPT.NetworkSimulator.Program
             Console.ReadKey();
         }
 
-        private static void RoutingTests(string[] args)
+        private static void RoutingAlgorithmsTests(string[] args)
         {
             var filename = args[0];
             var lines = File.ReadAllLines(filename);
@@ -66,6 +66,14 @@ namespace TOPT.NetworkSimulator.Program
             randomPaths.Sort();
             randomPaths.ForEach(path => Console.WriteLine(path.ToString()));
             Console.WriteLine("=====\n");
+        }
+
+        public static void RoutingTests(string[] args)
+        {
+            var network = new Network(3, 0);
+            var pce = new PCE(network, PCE.RoutingAlgorithm.ShortestPaths);
+            pce.Compute();
+            Console.WriteLine(network.ToString());
         }
     }
 }
