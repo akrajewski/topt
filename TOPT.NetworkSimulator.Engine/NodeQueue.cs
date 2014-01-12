@@ -10,13 +10,15 @@ namespace TOPT.NetworkSimulator.Engine
     {
         public static int size { get; set; } //NEED TO BE SET GLOBALY FOR ALL NODEQUEUES
 
-        public void AddToQueue (Packet packet)
+        public Packet AddToQueue (Packet packet)
         {
             if (this.Count < size) {
                 base.Enqueue(packet);
+                return null;
             }
             else {
                 //REPORT PACKET DROPPED ON QUEUE
+                return packet;
             }
         }
     }

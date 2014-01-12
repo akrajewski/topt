@@ -8,6 +8,7 @@ namespace TOPT.NetworkSimulator.Engine
 {
     class NodePort : IReceivable
     {
+        public static StatisticsManager statistics { get; set; }
         Node node = null;
 
         public void ReceivePacket(Packet packet)
@@ -15,7 +16,7 @@ namespace TOPT.NetworkSimulator.Engine
             //if the destinationId of the packet is equal to id of the node of the nodePort,
             if (packet.destinationId == node.nodeId)
             {
-                //packet should be handed over to statistics (client).
+                statistics.AddPacketToStatistics(packet, PacketState.DELIVERED_SUCCESSFULLY);
             }
             else
             {

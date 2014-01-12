@@ -8,6 +8,7 @@ namespace TOPT.NetworkSimulator.Engine
 {
     class Node : ISimulationObject, IReceivable
     {
+        public static StatisticsManager statistics { get; set; }
         private static int nodeIdGenerator = 0;
 
         public int nodeId { get; private set; }
@@ -31,7 +32,12 @@ namespace TOPT.NetworkSimulator.Engine
         {
             //receive a packet on one of the ingress vertical links or on a local port
             //put it into the queue
-            queue.AddToQueue(packet);
+            packet = queue.AddToQueue(packet);
+            if (packet != null)
+            {
+                statistics.AddPacketToStatistics(packet, PacketState.DROPPED);
+                    //packet was dropped in queue 
+            }
         }
 
         public void PerformSimulationStep()
