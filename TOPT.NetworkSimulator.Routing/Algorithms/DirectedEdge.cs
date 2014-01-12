@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TOPT.NetworkSimulator.Routing
+namespace TOPT.NetworkSimulator.Routing.Algorithms
 {
     public class DirectedEdge
     {
@@ -12,7 +12,7 @@ namespace TOPT.NetworkSimulator.Routing
 
         public int From { get; private set; }
         public int To { get; private set; }
-        public int Weight { get; private set; }
+        public double Weight { get; private set; }
 
         public DirectedEdge(int from, int to)
         {
@@ -21,10 +21,20 @@ namespace TOPT.NetworkSimulator.Routing
             this.Weight = WEIGHT;
         }
 
-        public DirectedEdge(int from, int to, int weight)
+        public DirectedEdge(int from, int to, double weight)
             : this(from, to)
         {
             this.Weight = weight;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            var other = obj as DirectedEdge;
+            return (other != null) ? (this.From == other.From && this.To == other.To) : false;
         }
     }
 }

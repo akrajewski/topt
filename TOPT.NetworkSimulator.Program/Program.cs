@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using System.IO;
-using TOPT.NetworkSimulator.Routing;
+using System.Text.RegularExpressions;
+
+using TOPT.NetworkSimulator.Routing.Algorithms;
 
 namespace TOPT.NetworkSimulator.Program
 {
@@ -18,28 +19,43 @@ namespace TOPT.NetworkSimulator.Program
 
         private static void RoutingTests(string[] args)
         {
-            var filename = "tinyEWD.txt";
+            var filename = args[0];
             var lines = File.ReadAllLines(filename);
             var vertexCount = int.Parse(lines.First());
-            var graph = new Digraph(vertexCount);
+            var graph = new DirectedGraph(vertexCount);
             foreach (var line in lines.Skip(1))
             {
-                var splitted = line.Split(' ');
+                var singleSpaced = Regex.Replace(line, @"\s+", " ");
+                var splitted = singleSpaced.Trim().Split(' ');
                 var from = int.Parse(splitted[0]);
                 var to = int.Parse(splitted[1]);
-                graph.addEdge(new DirectedEdge(from, to));
+                graph.AddEdge(new DirectedEdge(from, to));
             }
-            var dijkstra = new DijkstraSP(graph, 0);
-            for (var i = 1; i < vertexCount; i++)
-            {
-                Console.Write("0 to {0}: ", i);
-                foreach (var edge in dijkstra.pathTo(i))
-                {
-                    Console.Write("{0}->{1}", edge.From, edge.To);
-                }
-                Console.Write("\n");
-            }
-        }
+            var pathSearch = new PathSearch(graph);
 
+            Console.WriteLine("All paths:");
+            var paths = pathSearch.Paths();
+            paths.Sort();
+            paths.ForEach(path => Console.WriteLine(path.ToString()));
+            Console.WriteLine("=====\n");
+
+            Console.WriteLine("Shortest paths:");
+            var shortestPaths = pathSearch.ShortestPaths();
+            shortestPaths.Sort();
+            shortestPaths.ForEach(path => Console.WriteLine(path.ToString()));
+            Console.WriteLine("=====\n");
+
+            Console.WriteLine("Longest paths:");
+            var longestPaths = pathSearch.LongestPaths();
+            longestPaths.Sort();
+            longestPaths.ForEach(path => Console.WriteLine(path.ToString()));
+            Console.WriteLine("=====\n");
+
+            Console.WriteLine("Random paths:");
+            var randomPaths = pathSearch.RandomPaths();
+            randomPaths.Sort();
+            randomPaths.ForEach(path => Console.WriteLine(path.ToString()));
+            Console.WriteLine("=====\n");
+        }
     }
 }
