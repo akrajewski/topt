@@ -11,8 +11,8 @@ namespace TOPT.NetworkSimulator.Engine
         public int destinationId { get; set; }
         public int sourceId { get; set; }
 
-        int hops = 0;
-        int latency = 0;
+        public int hops { get; set; }
+        public int latency { get; set; }
 
         String traceroute = "";
 
@@ -31,11 +31,11 @@ namespace TOPT.NetworkSimulator.Engine
         {
             if (isNode) //thats a node
             {
-                traceroute += "n" + id + ">";
+                traceroute += "N" + id + ">";
             }
             else //thats a link
             {
-                traceroute += "l" + id + ">";
+                traceroute += "L" + id + ">";
             }
         }
 

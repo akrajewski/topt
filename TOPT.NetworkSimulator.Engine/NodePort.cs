@@ -21,7 +21,7 @@ namespace TOPT.NetworkSimulator.Engine
             //if the destinationId of the packet is equal to id of the node of the nodePort,
             if (packet.destinationId == node.Id)
             {
-                statistics.AddPacketToStatistics(packet, PacketState.DELIVERED_SUCCESSFULLY);
+                statistics.AddPacketToStatistics(packet, PacketState.DELIVERED);
             }
             else
             {

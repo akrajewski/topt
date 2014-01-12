@@ -25,7 +25,37 @@ namespace TOPT.NetworkSimulator.Engine
                 sb.Append(" ");
                 sb.AppendLine(Enum.GetName(typeof(PacketState), p.state));
             }
+
+            sb.AppendLine(GetStatistics());
+
             return sb.ToString();
+        }
+
+        private String GetStatistics()
+        {
+            double avg_hops = 0;
+            double avg_latency = 0;
+            int deliveredCounter = 0;
+            int droppedCounter = 0;
+
+            foreach (PacketListElement p in packetList)
+            {
+                if (p.state == PacketState.DELIVERED)
+                {
+                    deliveredCounter++;
+
+                    avg_hops += p.packet.hops;
+                    avg_latency += p.packet.latency;
+                }
+                else
+                {
+                    droppedCounter++;
+                }
+            }
+            avg_latency /= (double)deliveredCounter;
+            avg_hops /= (double)deliveredCounter;
+
+            return "Dropped packets: " + droppedCounter + "\nDelivered packets: " + deliveredCounter + " with avg_hops=" + avg_hops + " and avg_latency=" + avg_latency;
         }
     }
 
@@ -45,7 +75,7 @@ namespace TOPT.NetworkSimulator.Engine
 
     public enum PacketState //nie mam pomyslu na lepsza nazwe
     {
-        DELIVERED_SUCCESSFULLY,
+        DELIVERED,
         DROPPED
     }
 }

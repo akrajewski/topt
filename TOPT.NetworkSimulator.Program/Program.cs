@@ -74,7 +74,7 @@ namespace TOPT.NetworkSimulator.Program
             Node.statistics = statistics;
             NodePort.statistics = statistics;
 
-            var network = new Network(3, 3, 1.0);
+            var network = new Network(4, 10, 1.0);
             var pce = new PCE(network, PCE.RoutingAlgorithm.ShortestPaths);
             pce.Compute();
             var scheduler = new Scheduler(network);
