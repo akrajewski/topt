@@ -39,11 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\PathSearch.cs" />
+    <Compile Include="Algorithms\Path.cs" />
     <Compile Include="Collections\PriorityQueue.cs" />
-    <Compile Include="Digraph.cs" />
-    <Compile Include="DijkstraSP.cs" />
-    <Compile Include="DirectedEdge.cs" />
+    <Compile Include="Algorithms\DirectedGraph.cs" />
+    <Compile Include="Algorithms\DijkstraSP.cs" />
+    <Compile Include="Algorithms\DirectedEdge.cs" />
+    <Compile Include="IRouter.cs" />
+    <Compile Include="PCE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IRoutableNetwork.cs" />
+    <Compile Include="RoutingTable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
