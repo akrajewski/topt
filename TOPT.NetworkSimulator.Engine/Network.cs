@@ -9,9 +9,8 @@ namespace TOPT.NetworkSimulator.Engine
 {
     public class Network : IRoutableNetwork
     {
-        List<Node> networkNodes = null;
-        List<Link> networkLinks = null;
-
+        public List<Node> networkNodes { get; set; }
+        public List<Link> networkLinks { get; set; }
 
         public Network(int networkSize, int queueSize)
         {

@@ -10,5 +10,20 @@ namespace TOPT.NetworkSimulator.Engine
     {
         public int destinationId { get; set; }
         public int sourceId { get; set; }
+
+        String traceroute = "";
+
+        public void AddToTraceroute(int id, bool isNode)
+        {
+            if (isNode) //thats a node
+            {
+                traceroute += "n" + id + ";";
+            }
+            else //thats a link
+            {
+                traceroute += "l" + id + ";";
+            }
+        }
+        
     }
 }
