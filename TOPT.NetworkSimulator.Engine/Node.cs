@@ -69,7 +69,7 @@ namespace TOPT.NetworkSimulator.Engine
                 {
                     //map it on forwarding table &
                     //send it using ReceivePacket method on a proper egress link
-                    this.OutgoingLink(packet.destinationId, packet.sourceId).ReceivePacket(packet);
+                    this.OutgoingLink(packet.sourceId, packet.destinationId).ReceivePacket(packet);
                 }
             }
         }
@@ -89,9 +89,15 @@ namespace TOPT.NetworkSimulator.Engine
 
         private Link OutgoingLink(int from, int to)
         {
-            var nextHop = this.RoutingTable.NextHop(from, to);
-            return (egressHorizontalLink.linkDestinationNode.Id == nextHop) ? egressHorizontalLink : egressVerticalLink;
+            if (this.RoutingTable.Contains(from, to))
+            {
+                var nextHop = this.RoutingTable.NextHop(from, to);
+                return (egressHorizontalLink.linkDestinationNode.Id == nextHop) ? egressHorizontalLink : egressVerticalLink;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
-
     }
 }

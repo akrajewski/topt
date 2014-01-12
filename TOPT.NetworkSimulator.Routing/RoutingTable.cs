@@ -20,6 +20,11 @@ namespace TOPT.NetworkSimulator.Routing
             return entries.First(entry => entry.From == from && entry.To == to).NextHop;
         }
 
+        public bool Contains(int from, int to)
+        {
+            return entries.Count(entry => entry.From == from && entry.To == to) > 0;
+        }
+        
         public override string ToString()
         {
             var builder = new StringBuilder();
