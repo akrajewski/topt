@@ -28,16 +28,14 @@ namespace TOPT.NetworkSimulator.Engine
             this.nodeId = node.Id;
 
             generationLatency = (int)((1.0 / generationRate) - 1.0);
-
-            Console.WriteLine("generationLatency=" + generationLatency + " for rate=" + generationRate); 
-                //for debug purposes
         }
 
         public void PerformSimulationStep()
         {
             if (timeUnitilNextGeneration == 0)
             {
-                localNodePort.ReceivePacket(packetGenerator.GenerateRandomPacket(nodeId));
+                Packet packet = packetGenerator.GenerateRandomPacket(nodeId);
+                localNodePort.ReceivePacket(packet);
                 timeUnitilNextGeneration = generationLatency;
             }
             else

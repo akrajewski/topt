@@ -19,7 +19,7 @@ namespace TOPT.NetworkSimulator.Engine
 
         public Link()
         {
-            this.linkId = ++linkIdGenerator; //generating new Id
+            this.linkId = linkIdGenerator++; //generating new Id
         }
 
         public void ReceivePacket(Packet packet)
