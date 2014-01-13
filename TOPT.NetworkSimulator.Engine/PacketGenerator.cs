@@ -26,7 +26,7 @@ namespace TOPT.NetworkSimulator.Engine
 
             do
             {
-                destinationId = rnd.Next(0, numberOfNodes); //random number from 0 to numberOfNodes-1
+                destinationId = rnd.Next(0, numberOfNodes); //random number from 0 to number-1
             } while (destinationId == sourceId);
 
             network.packetsInNetwork++;

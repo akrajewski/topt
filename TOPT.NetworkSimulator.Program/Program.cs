@@ -71,7 +71,7 @@ namespace TOPT.NetworkSimulator.Program
         public static void RoutingTests(string[] args)
         {
 
-            var network = new Network(4, 10, 1.0, 10);
+            var network = new Network(4, 10, 1.0, 100);
             var pce = new PCE(network, PCE.RoutingAlgorithm.ShortestPaths);
             pce.Compute();
             var scheduler = new Scheduler(network);

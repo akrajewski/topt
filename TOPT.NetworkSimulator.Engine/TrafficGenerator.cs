@@ -19,7 +19,7 @@ namespace TOPT.NetworkSimulator.Engine
         //int endTime_global = 0;
 
         int generationLatency = 0;
-            //specifies how many time units should generator wait between generating a single packet
+            //specifies how many time units should generator wait between generating a single element
 
         int timeUnitilNextGeneration = 0;
 

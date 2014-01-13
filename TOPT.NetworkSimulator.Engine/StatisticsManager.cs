@@ -26,14 +26,16 @@ namespace TOPT.NetworkSimulator.Engine
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (PacketListElement p in packetList)
-            {
-                sb.Append(p.packet.ToString());
-                sb.Append(" ");
-                sb.AppendLine(Enum.GetName(typeof(PacketState), p.state));
-            }
+            //foreach (PacketListElement p in packetList)
+            //{
+            //    sb.Append(p.packet.ToString());
+            //    sb.Append(" ");
+            //    sb.AppendLine(Enum.GetName(typeof(PacketState), p.state));
+            //}
 
             sb.AppendLine(GetStatistics());
+            sb.AppendLine();
+            sb.AppendLine(GetPacketDestinationStatistics());
 
             return sb.ToString();
         }
@@ -64,6 +66,14 @@ namespace TOPT.NetworkSimulator.Engine
 
             return "Dropped packets: " + droppedCounter + "\nDelivered packets: " + deliveredCounter + " with avg_hops=" + avg_hops + " and avg_latency=" + avg_latency;
         }
+
+        public String GetPacketDestinationStatistics ()
+        {
+            PacketDestinationStatistics destinationStatistics = new PacketDestinationStatistics(network.networkNodes.Count);
+            destinationStatistics.CalculatePacketPercentages(packetList);
+
+            return destinationStatistics.ToString();
+        }
     }
 
     public class PacketListElement
@@ -75,6 +85,129 @@ namespace TOPT.NetworkSimulator.Engine
         {
             this.packet = packet;
             this.state = state;
+        }
+    }
+
+    public class PacketDestinationStatistics
+    {
+        List<PacketDestinationListElement> packets = null;
+        int maxNumberOfDigits = 0;
+
+        public PacketDestinationStatistics(int numberOfNodes)
+        {
+            packets = new List<PacketDestinationListElement>();
+
+            for (int i = 0; i < numberOfNodes; i++)
+            {
+                for (int j = 0; j < numberOfNodes; j++)
+                {
+                    if (i != j) //its not the same node number
+                    {
+                        packets.Add(new PacketDestinationListElement(i, j));
+                    }
+                }
+            }
+
+            maxNumberOfDigits = CalculateNumberOfDigits(numberOfNodes - 1);
+        }
+
+        private int CalculateNumberOfDigits(int number)
+        {
+            if (number == 0)
+                return 1;
+
+            double temp = (double)number;
+            int counter = 0;
+
+            while (temp >= 1.0)
+            {
+                temp /= 10.0;
+                counter++;
+            }
+
+            return counter;
+        }
+
+
+        public void CalculatePacketPercentages(List<PacketListElement> packetList)
+        {
+            foreach (PacketListElement p in packetList)
+            {
+                foreach (PacketDestinationListElement destination in packets)
+                {
+                    if (destination.IsTheSamePacketAs(p))
+                    {
+                        destination.percentage++;
+                        break;
+                    }
+                }
+            }
+
+            foreach (PacketDestinationListElement destination in packets)
+            {
+                destination.percentage /= packetList.Count;
+                destination.percentage *= 100.0;
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            double sum = 0.0;
+
+            String strSrc = null;
+            int srcNumOfDigitsDiff = 0;
+
+            String strDst = null;
+            int dstNumOfDigitsDiff = 0;
+
+
+            foreach (PacketDestinationListElement p in packets)
+            {
+
+                srcNumOfDigitsDiff = maxNumberOfDigits - CalculateNumberOfDigits(p.sourceId);
+                strSrc = p.sourceId.ToString();
+                while (srcNumOfDigitsDiff-- > 0)
+                {
+                    strSrc = " " + strSrc;
+                }
+
+                dstNumOfDigitsDiff = maxNumberOfDigits - CalculateNumberOfDigits(p.destinationId);
+                strDst = p.destinationId.ToString();
+                while (dstNumOfDigitsDiff-- > 0)
+                {
+                    strDst = " " + strDst;
+                }
+
+
+                sb.AppendLine("[" + strSrc + " -> " + strDst + "]\t" + p.percentage + "%");
+                sum += p.percentage;
+            }
+            sb.AppendLine("Sum of percentages= " + sum);
+            return sb.ToString();
+        }
+    }
+
+
+    public class PacketDestinationListElement
+    {
+        public int sourceId { get; set; }
+        public int destinationId { get; set; }
+        public double percentage { get; set; }
+
+        public PacketDestinationListElement (int sourceId, int destinationId)
+        {
+            this.sourceId = sourceId;
+            this.destinationId = destinationId;
+            this.percentage = 0;
+        }
+
+        public bool IsTheSamePacketAs(PacketListElement element)
+        {
+            if (element.packet.sourceId == this.sourceId && element.packet.destinationId == this.destinationId)
+                return true;
+            else
+                return false;
         }
     }
 

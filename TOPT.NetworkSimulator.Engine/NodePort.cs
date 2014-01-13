@@ -18,14 +18,14 @@ namespace TOPT.NetworkSimulator.Engine
 
         public void ReceivePacket(Packet packet)
         {
-            //if the destinationId of the packet is equal to id of the node of the nodePort,
+            //if the destinationId of the element is equal to id of the node of the nodePort,
             if (packet.destinationId == node.Id)
             {
                 statistics.AddPacketToStatistics(packet, PacketState.DELIVERED);
             }
             else
             {
-                //otherwise packet should be handed over to the node
+                //otherwise element should be handed over to the node
                 node.ReceivePacket(packet);
             }
         }

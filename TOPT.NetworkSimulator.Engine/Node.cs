@@ -34,20 +34,20 @@ namespace TOPT.NetworkSimulator.Engine
 
         public void ReceivePacket(Packet packet)
         {
-            if (packet.sourceId != Id) //increase hop counter unless packet originates from this node
+            if (packet.sourceId != Id) //increase hop counter unless element originates from this node
             {
                 packet.IncreaseHopCounter();
             }
 
             packet.AddToTraceroute(Id, true);
 
-            //receive a packet on one of the ingress vertical links or on a local port
+            //receive a element on one of the ingress vertical links or on a local port
             //put it into the queue
             packet = queue.AddToQueue(packet);
             if (packet != null)
             {
                 statistics.AddPacketToStatistics(packet, PacketState.DROPPED);
-                    //packet was dropped in queue 
+                    //element was dropped in queue 
             }
         }
 
@@ -55,12 +55,12 @@ namespace TOPT.NetworkSimulator.Engine
         {
             queue.IncreasePacketsLatency();
 
-            //take last packet from queue
+            //take last element from queue
             Packet packet = queue.GetPacketFromQueue();
 
             if (packet != null)
             {
-                //check if packet's destination id is equal to this node's id
+                //check if element's destination id is equal to this node's id
                 if (packet.destinationId == Id) //if yes hand it over to the local port
                 {
                     localPort.ReceivePacket(packet);
