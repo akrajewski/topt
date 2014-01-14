@@ -23,7 +23,7 @@ namespace TOPT.NetworkSimulator.Program
             var queueSize = 100;
             var verbose = false;
             var packetsPerSec = 1.0;
-            var numOfPackets = 100;
+            var packetCount = 100;
             var help = false;
 
             var optionSet = new OptionSet()
@@ -49,7 +49,7 @@ namespace TOPT.NetworkSimulator.Program
                     v => packetsPerSec = double.Parse(v)
                 },
                 {
-                    "#|numOfPackets=",
+                    "c|packetCount=",
                     "The number of packets to generate in every single client (node generating traffic). Specifies the length of the simmulation. Default is 100.",
                     v => numOfPackets = int.Parse(v)
                 },
@@ -96,11 +96,11 @@ namespace TOPT.NetworkSimulator.Program
             }
 
 
-            StartSimulation(routing, networkSize, queueSize, packetsPerSec, numOfPackets, verbose);
+            StartSimulation(routing, networkSize, queueSize, packetsPerSec, packetCount, verbose);
 
         }
 
-        private static void StartSimulation(string routing, int networkSize, int queueSize, double packetsPerSec, int numOfPackets, bool verbose)
+        private static void StartSimulation(string routing, int networkSize, int queueSize, double packetsPerSec, int packetCount, bool verbose)
         {
             Console.WriteLine("-----------------------------------------");
             Console.WriteLine("TOPT Network Simulator v0.1");
@@ -109,7 +109,7 @@ namespace TOPT.NetworkSimulator.Program
             Console.WriteLine("-----------------------------------------");
 
             Console.WriteLine("Generating a {0}x{0} Manhattan nework...\n", networkSize);
-            var network = new Network(networkSize, queueSize, packetsPerSec, numOfPackets);
+            var network = new Network(networkSize, queueSize, packetsPerSec, packetCount);
 
             Console.WriteLine("Routing algorithm used: " + routing);
             Console.WriteLine("Computing paths... " + ((networkSize > 3) ? "This may take a moment...\n" : "\n"));
