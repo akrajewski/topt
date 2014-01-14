@@ -19,6 +19,12 @@ namespace TOPT.NetworkSimulator.Routing
             this.network = network;
         }
 
+        public static void Compute(IRoutableNetwork network, RoutingAlgorithm algorithm)
+        {
+            var pce = new PCE(network, algorithm);
+            pce.Compute();
+        }
+
         public void Compute()
         {
             var search = new PathSearch(network.ToGraph());
