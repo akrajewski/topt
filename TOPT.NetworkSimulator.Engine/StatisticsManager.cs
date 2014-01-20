@@ -26,16 +26,16 @@ namespace TOPT.NetworkSimulator.Engine
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (PacketListElement p in packetList)
-            {
-                sb.Append(p.packet.ToString());
-                sb.Append(" ");
-                sb.AppendLine(Enum.GetName(typeof(PacketState), p.state));
-            }
+            //foreach (PacketListElement p in packetList)
+            //{
+            //    sb.Append(p.packet.ToString());
+            //    sb.Append(" ");
+            //    sb.AppendLine(Enum.GetName(typeof(PacketState), p.state));
+            //}
 
             sb.AppendLine(GetStatistics());
             sb.AppendLine();
-            sb.AppendLine(GetPacketDestinationStatistics());
+            //sb.AppendLine(GetPacketDestinationStatistics());
 
             return sb.ToString();
         }

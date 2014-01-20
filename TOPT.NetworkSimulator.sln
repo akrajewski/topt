@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TOPT.NetworkSimulator.Engin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TOPT.NetworkSimulator.Routing", "TOPT.NetworkSimulator.Routing\TOPT.NetworkSimulator.Routing.csproj", "{EB1A781B-E9EE-4837-A7C4-452CF0805C0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TOPT.NetworkSimulator.GUI", "TOPT.NetworkSimulator.GUI\TOPT.NetworkSimulator.GUI.csproj", "{CBAD457B-4EFC-44A5-914C-2BC0E9527207}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{EB1A781B-E9EE-4837-A7C4-452CF0805C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB1A781B-E9EE-4837-A7C4-452CF0805C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB1A781B-E9EE-4837-A7C4-452CF0805C0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBAD457B-4EFC-44A5-914C-2BC0E9527207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBAD457B-4EFC-44A5-914C-2BC0E9527207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBAD457B-4EFC-44A5-914C-2BC0E9527207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBAD457B-4EFC-44A5-914C-2BC0E9527207}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

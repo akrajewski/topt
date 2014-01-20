@@ -51,7 +51,7 @@ namespace TOPT.NetworkSimulator.Program
                 {
                     "c|packetCount=",
                     "The number of packets to generate in every single client (node generating traffic). Specifies the length of the simmulation. Default is 100.",
-                    v => numOfPackets = int.Parse(v)
+                    v => packetCount = int.Parse(v)
                 },
                 {
                     "v|verbose",
@@ -96,11 +96,11 @@ namespace TOPT.NetworkSimulator.Program
             }
 
 
-            StartSimulation(routing, networkSize, queueSize, packetsPerSec, packetCount, verbose);
+            StartSimulation(routingAlgorithm, networkSize, queueSize, packetsPerSec, packetCount, verbose);
 
         }
 
-        private static void StartSimulation(string routing, int networkSize, int queueSize, double packetsPerSec, int packetCount, bool verbose)
+        private static void StartSimulation(PCE.RoutingAlgorithm routingAlgorithm, int networkSize, int queueSize, double packetsPerSec, int packetCount, bool verbose)
         {
             Console.WriteLine("-----------------------------------------");
             Console.WriteLine("TOPT Network Simulator v0.1");
@@ -111,9 +111,9 @@ namespace TOPT.NetworkSimulator.Program
             Console.WriteLine("Generating a {0}x{0} Manhattan nework...\n", networkSize);
             var network = new Network(networkSize, queueSize, packetsPerSec, packetCount);
 
-            Console.WriteLine("Routing algorithm used: " + routing);
+            Console.WriteLine("Routing algorithm used: " + routingAlgorithm);
             Console.WriteLine("Computing paths... " + ((networkSize > 3) ? "This may take a moment...\n" : "\n"));
-            PCE.Compute(network, PCE.RoutingAlgorithm.ShortestPaths);
+            PCE.Compute(network, routingAlgorithm);
 
             if (verbose)
             {
