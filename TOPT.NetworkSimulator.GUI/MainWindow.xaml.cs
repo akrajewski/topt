@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 using TOPT.NetworkSimulator.Engine;
 using TOPT.NetworkSimulator.Routing;
@@ -30,7 +31,7 @@ namespace TOPT.NetworkSimulator.GUI
         }
 
         private Dictionary<TextBox, string> defaults = new Dictionary<TextBox,string>();
-
+        private Dictionary<PCE.RoutingAlgorithm, List<Network>> routedNetworks = new Dictionary<PCE.RoutingAlgorithm, List<Network>>();
 
         public void InitData()
         {
@@ -53,14 +54,17 @@ namespace TOPT.NetworkSimulator.GUI
                 textBox.Text = defaults[textBox];
             }
 
+            routedNetworks.Add(PCE.RoutingAlgorithm.ShortestPaths, new List<Network>());
+            routedNetworks.Add(PCE.RoutingAlgorithm.LongestPaths, new List<Network>());
+            routedNetworks.Add(PCE.RoutingAlgorithm.RandomPaths, new List<Network>());
+
         }
+
+       
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            mainGrid.IsEnabled = false;
-            mainGrid.Opacity = 0.75;
-            progressPanel.Visibility = Visibility.Visible;
-
+           
             var networkSize = int.Parse(this.networkSize.Text);
             var queueSize = int.Parse(this.queueSize.Text);
 
@@ -71,21 +75,36 @@ namespace TOPT.NetworkSimulator.GUI
             var packetTimeout = int.Parse(this.packetTimeout.Text);
             var routingAlgorithm = (PCE.RoutingAlgorithm) Enum.Parse(typeof(PCE.RoutingAlgorithm), this.routingAlgorithms.SelectedItem as string);
 
-            var network = new Network(networkSize, queueSize, packetsPerSec, packetCount, packetTimeout);
-            PCE.Compute(network, routingAlgorithm);
+            var network = routedNetworks[routingAlgorithm].FirstOrDefault(n => n.Routers.Count == networkSize * networkSize);
+            if (network == null)
+            {
+                network = new Network(networkSize, queueSize, packetsPerSec, packetCount, packetTimeout);
+                PCE.Compute(network, routingAlgorithm);
+                routedNetworks[routingAlgorithm].Add(network);
+            }
+
+
+            //var network = new Network(networkSize, queueSize, packetsPerSec, packetCount, packetTimeout);
+            //PCE.Compute(network, routingAlgorithm);
             var scheduler = new Scheduler(network);
             var statistics = new StatisticsManager(network);
             Node.statistics = statistics;
             NodePort.statistics = statistics;
             NodeQueue.statistics = statistics;
             scheduler.PerformSimulation();
-            
+
+    
+            this.output.Text += "----------------------------";
+            this.output.Text += "\nNetwork size: " + networkSize;
+            this.output.Text += "\nQueue size: " + queueSize;
+            this.output.Text += "\nRouting algorithm: " + routingAlgorithm;
+            this.output.Text += "\nPacket count: " + packetCount;
+            this.output.Text += "\nPackets per second: " + packetsPerSec;
+            this.output.Text += "\nPacket timeout: " + packetTimeout + "\n";
+
             this.output.Text += statistics.ToString();
 
-            progressPanel.Visibility = Visibility.Hidden;
-            mainGrid.Opacity = 1;
-            mainGrid.IsEnabled = true;
-
+            this.output.Text += "----------------------------\n";
         }
 
         private void int_PreviewTextInput(object sender, TextCompositionEventArgs e)
