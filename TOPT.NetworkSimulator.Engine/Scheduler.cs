@@ -10,7 +10,6 @@ namespace TOPT.NetworkSimulator.Engine
     {
         Network network = null;
 
-        int currentSimulationTime = 0;
 
         public Scheduler(Network network)
         {

@@ -15,8 +15,13 @@ namespace TOPT.NetworkSimulator.Engine
 
         public int packetsInNetwork { get; set; }
 
-        public Network(int networkSize, int queueSize, double packetGenerationRate, int numberOfPacketsToGenerate)
+        public Network(int networkSize, int queueSize, double packetGenerationRate, int numberOfPacketsToGenerate, int TTL)
         {
+            Node.ResetNodeIdGenerator();
+            Link.ResetLinkIdGenerator();
+
+            Packet.SetTimeToLive(TTL);
+
             NodeQueue.size = queueSize;
             packetsInNetwork = 0;
 

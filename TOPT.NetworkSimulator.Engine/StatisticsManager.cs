@@ -44,8 +44,11 @@ namespace TOPT.NetworkSimulator.Engine
         {
             double avg_hops = 0;
             double avg_latency = 0;
+            double latency_variance = 0;
+
             int deliveredCounter = 0;
-            int droppedCounter = 0;
+            int droppedOnQueueCounter = 0;
+            int droppedOutdatedCounter = 0;
 
             foreach (PacketListElement p in packetList)
             {
@@ -56,15 +59,32 @@ namespace TOPT.NetworkSimulator.Engine
                     avg_hops += p.packet.hops;
                     avg_latency += p.packet.latency;
                 }
-                else
+                else if (p.state == PacketState.DROPPED_ON_QUEUE)
                 {
-                    droppedCounter++;
+                    droppedOnQueueCounter++;
+                }
+                else if (p.state == PacketState.DROPPED_OUTDATED)
+                {
+                    droppedOutdatedCounter++;
                 }
             }
             avg_latency /= (double)deliveredCounter;
             avg_hops /= (double)deliveredCounter;
 
-            return "Dropped packets: " + droppedCounter + "\nDelivered packets: " + deliveredCounter + " with avg_hops=" + avg_hops + " and avg_latency=" + avg_latency;
+
+            foreach (PacketListElement p in packetList)
+            {
+                if (p.state == PacketState.DELIVERED)
+                {
+                    latency_variance += Math.Pow(p.packet.latency - avg_latency, 2.0);
+                }
+            }
+            latency_variance /= (double)deliveredCounter;
+
+            return "Dropped on queue packets:\t" + droppedOnQueueCounter +
+                        "\nDropped (outdated) packets:\t" + droppedOutdatedCounter +
+                            "\nDelivered packets:\t\t" + deliveredCounter +
+                            " \n\tavg_hops=" + Math.Round(avg_hops, 3) + ";   avg_latency=" + Math.Round(avg_latency, 3) + ";   latency variance=" + Math.Round(latency_variance, 3);
         }
 
         public String GetPacketDestinationStatistics ()
@@ -216,6 +236,7 @@ namespace TOPT.NetworkSimulator.Engine
     public enum PacketState //nie mam pomyslu na lepsza nazwe
     {
         DELIVERED,
-        DROPPED
+        DROPPED_ON_QUEUE,
+        DROPPED_OUTDATED
     }
 }

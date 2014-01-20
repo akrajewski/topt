@@ -63,17 +63,21 @@ namespace TOPT.NetworkSimulator.GUI
 
             var networkSize = int.Parse(this.networkSize.Text);
             var queueSize = int.Parse(this.queueSize.Text);
-            var packetsPerSec = double.Parse(this.packetsPerSecond.Text);
+
+            var packetsPerSecText = this.packetsPerSecond.Text.Replace(".", ",") ;
+
+            var packetsPerSec = double.Parse(packetsPerSecText);
             var packetCount = int.Parse(this.packetCount.Text);
             var packetTimeout = int.Parse(this.packetTimeout.Text);
             var routingAlgorithm = (PCE.RoutingAlgorithm) Enum.Parse(typeof(PCE.RoutingAlgorithm), this.routingAlgorithms.SelectedItem as string);
 
-            var network = new Network(networkSize, queueSize, packetsPerSec, packetCount);
+            var network = new Network(networkSize, queueSize, packetsPerSec, packetCount, packetTimeout);
             PCE.Compute(network, routingAlgorithm);
             var scheduler = new Scheduler(network);
             var statistics = new StatisticsManager(network);
             Node.statistics = statistics;
             NodePort.statistics = statistics;
+            NodeQueue.statistics = statistics;
             scheduler.PerformSimulation();
             
             this.output.Text += statistics.ToString();

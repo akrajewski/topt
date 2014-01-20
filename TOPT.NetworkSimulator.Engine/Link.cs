@@ -9,6 +9,10 @@ namespace TOPT.NetworkSimulator.Engine
     public class Link : ISimulationObject, IReceivable
     {
         private static int linkIdGenerator = 0;
+        public static void ResetLinkIdGenerator()
+        {
+            linkIdGenerator = 0;
+        }
 
         private int linkId = 0;
 

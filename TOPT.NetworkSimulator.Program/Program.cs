@@ -109,7 +109,7 @@ namespace TOPT.NetworkSimulator.Program
             Console.WriteLine("-----------------------------------------");
 
             Console.WriteLine("Generating a {0}x{0} Manhattan nework...\n", networkSize);
-            var network = new Network(networkSize, queueSize, packetsPerSec, packetCount);
+            var network = new Network(networkSize, queueSize, packetsPerSec, packetCount, 10);
 
             Console.WriteLine("Routing algorithm used: " + routingAlgorithm);
             Console.WriteLine("Computing paths... " + ((networkSize > 3) ? "This may take a moment...\n" : "\n"));
@@ -143,7 +143,7 @@ namespace TOPT.NetworkSimulator.Program
 
         private static void EngineTests()
         {
-            Network net = new Network(3, 0, 1.0, 10);
+            Network net = new Network(3, 0, 1.0, 10, 10);
             Console.Write(net.ToString());
             Console.ReadKey();
         }
@@ -192,7 +192,7 @@ namespace TOPT.NetworkSimulator.Program
         public static void RoutingTests(string[] args)
         {
 
-            var network = new Network(4, 2000, 1.0, 100);
+            var network = new Network(4, 2000, 1.0, 100, 10);
             var pce = new PCE(network, PCE.RoutingAlgorithm.ShortestPaths);
             pce.Compute();
             var scheduler = new Scheduler(network);

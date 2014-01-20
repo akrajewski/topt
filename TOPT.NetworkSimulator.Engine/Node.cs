@@ -12,6 +12,11 @@ namespace TOPT.NetworkSimulator.Engine
         public static StatisticsManager statistics { get; set; }
         private static int nodeIdGenerator = 0;
 
+        public static void ResetNodeIdGenerator()
+        {
+            nodeIdGenerator = 0;
+        }
+
         public int Id { get; private set; }
 
         public Link ingressHorizontalLink { get; set; }
@@ -41,12 +46,18 @@ namespace TOPT.NetworkSimulator.Engine
 
             packet.AddToTraceroute(Id, true);
 
+            //if (packet.IsOutdated())
+            //{
+            //    statistics.AddPacketToStatistics(packet, PacketState.DROPPED_OUTDATED);
+            //    return;
+            //}
+
             //receive a element on one of the ingress vertical links or on a local port
             //put it into the queue
             packet = queue.AddToQueue(packet);
             if (packet != null)
             {
-                statistics.AddPacketToStatistics(packet, PacketState.DROPPED);
+                statistics.AddPacketToStatistics(packet, PacketState.DROPPED_ON_QUEUE);
                     //element was dropped in queue 
             }
         }
@@ -54,6 +65,7 @@ namespace TOPT.NetworkSimulator.Engine
         public void PerformSimulationStep()
         {
             queue.IncreasePacketsLatency();
+            queue.DropOutdatedPackets();
 
             //take last element from queue
             Packet packet = queue.GetPacketFromQueue();

@@ -8,11 +8,19 @@ namespace TOPT.NetworkSimulator.Engine
 {
     public class Packet
     {
+        private static int ttlDefault = 0;
+        public static void SetTimeToLive (int ttl)
+        {
+            ttlDefault = ttl;
+        }
+
         public int destinationId { get; set; }
         public int sourceId { get; set; }
 
         public int hops { get; set; }
         public int latency { get; set; }
+
+        public int ttl { get; set; }
 
         String traceroute = "";
 
@@ -20,6 +28,8 @@ namespace TOPT.NetworkSimulator.Engine
         {
             this.sourceId = sourceId;
             this.destinationId = destinationId;
+
+            ttl = ttlDefault;
         }
 
         public override string ToString()
@@ -47,6 +57,19 @@ namespace TOPT.NetworkSimulator.Engine
         public void IncreaseLatencyCounter()
         {
             latency++;
+            ttl--;
+        }
+
+        public bool IsOutdated()
+        {
+            if (ttl <= 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
