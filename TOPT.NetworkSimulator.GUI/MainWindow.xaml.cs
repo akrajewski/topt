@@ -82,6 +82,10 @@ namespace TOPT.NetworkSimulator.GUI
                 PCE.Compute(network, routingAlgorithm);
                 routedNetworks[routingAlgorithm].Add(network);
             }
+            else
+            {
+                network.SetupPacketGeneration(networkSize, queueSize, packetsPerSec, packetCount, packetTimeout);
+            }
 
 
             //var network = new Network(networkSize, queueSize, packetsPerSec, packetCount, packetTimeout);

@@ -20,18 +20,22 @@ namespace TOPT.NetworkSimulator.Engine
             Node.ResetNodeIdGenerator();
             Link.ResetLinkIdGenerator();
 
-            Packet.SetTimeToLive(TTL);
-
-            NodeQueue.size = queueSize;
-            packetsInNetwork = 0;
-
             //network generation
             networkNodes = new List<Node>();
             networkLinks = new List<Link>();
 
-            trafficGenerators = new List<TrafficGenerator>();
-
             GenerateNetwork(networkSize);
+
+            SetupPacketGeneration(networkSize, queueSize, packetGenerationRate, numberOfPacketsToGenerate, TTL);
+        }
+
+        public void SetupPacketGeneration(int networkSize, int queueSize, double packetGenerationRate, int numberOfPacketsToGenerate, int TTL)
+        {
+            packetsInNetwork = 0;
+            Packet.SetTimeToLive(TTL);
+            NodeQueue.size = queueSize;
+            
+            trafficGenerators = new List<TrafficGenerator>();
 
             TrafficGenerator.packetGenerator = new PacketGenerator(this);
             TrafficGenerator.numberOfPacketsToGenerate = numberOfPacketsToGenerate;
