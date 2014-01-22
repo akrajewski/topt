@@ -65,5 +65,17 @@ namespace TOPT.NetworkSimulator.Engine
         {
             return string.Format("[LINK " + linkId + ": destined for node {0}]", linkDestinationNode.Id);
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Link;
+            
+            if (other == null)
+            {
+                return false;
+            }
+
+            return (this.linkId == other.linkId);
+        }
     }
 }

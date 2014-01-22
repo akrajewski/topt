@@ -54,7 +54,7 @@
             <TextBox Grid.Row="2" Style="{StaticResource numBox}" MaxLength="6" Width="70" Name="packetCount" PreviewTextInput="int_PreviewTextInput" LostFocus="LostFocus"/>
 
             <Label Grid.Row="3" Grid.Column="0" Content="Pakiety na sekundę:" />
-            <TextBox Grid.Row="3" Style="{StaticResource numBox}" Name="packetsPerSecond" PreviewTextInput="double_PreviewTextInput" LostFocus="LostFocus"/>
+            <TextBox Grid.Row="3" Style="{StaticResource numBox}" Name="packetsPerSecond" PreviewTextInput="double_PreviewTextInput" LostFocus="LostFocus_double"/>
 
             <Label Grid.Row="4" Grid.Column="0" Content="Czas przeterminowania pakietu:" />
             <TextBox Grid.Row="4" Style="{StaticResource numBox}" MaxLength="5" Name="packetTimeout" PreviewTextInput="int_PreviewTextInput" LostFocus="LostFocus"/>

@@ -85,5 +85,10 @@ namespace TOPT.NetworkSimulator.Engine
             return result;
         }
 
+        public bool IsEmpty()
+        {
+            return queue.Count == 0;
+        }
+        
     }
 }

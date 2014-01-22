@@ -22,19 +22,42 @@ namespace TOPT.NetworkSimulator.Engine
         public Link ingressHorizontalLink { get; set; }
         public Link ingressVerticalLink { get; set; }
 
-        public Link egressHorizontalLink { get; set; }
-        public Link egressVerticalLink { get; set; }
+        public Link egressHorizontalLink 
+        {
+            get { return ehz; }
+            set
+            {
+                ehz = value;
+                queues.Add(ehz, new NodeQueue());
+            }
+        }
+        private Link ehz;
+
+
+        public Link egressVerticalLink 
+        {
+            get { return evl; }
+            set
+            {
+                evl = value;
+                queues.Add(evl, new NodeQueue());
+            }
+        }
+        private Link evl;
 
         public NodePort localPort { get; set; }
 
-        NodeQueue queue = null;
+
+        private List<Packet> receivedPackets = new List<Packet>();
+        private Dictionary<Link, NodeQueue> queues = new Dictionary<Link, NodeQueue>();
+
+        NodeQueue queue = new NodeQueue();
 
         public Node()
         {
             this.Id = nodeIdGenerator++; //generating new Id
             this.RoutingTable = new RoutingTable();
 
-            queue = new NodeQueue();
         }
 
         public void ReceivePacket(Packet packet)
@@ -54,35 +77,62 @@ namespace TOPT.NetworkSimulator.Engine
 
             //receive a element on one of the ingress vertical links or on a local port
             //put it into the queue
-            packet = queue.AddToQueue(packet);
-            if (packet != null)
+
+            receivedPackets.Add(packet);
+        }
+
+        private Action<Packet, NodeQueue> addToQueue = (p, q) =>
             {
-                statistics.AddPacketToStatistics(packet, PacketState.DROPPED_ON_QUEUE);
-                    //element was dropped in queue 
+                if (q.AddToQueue(p) != null)
+                {
+                    statistics.AddPacketToStatistics(p, PacketState.DROPPED_ON_QUEUE);
+                }
+            };
+
+
+        public void HandleTransmissionVia(Link link)
+        {
+            var queue = queues[link];
+
+            var packetsVia = receivedPackets.Where(p => OutgoingLink(p.sourceId, p.destinationId) == link).ToList();
+            var fromQueue = queue.GetPacketFromQueue();
+            if (fromQueue != null)
+            {
+                link.ReceivePacket(fromQueue);
+                packetsVia.ForEach(p => addToQueue(p, queue));
+            }
+            else
+            {
+                if (packetsVia.Count > 0)
+                {
+                    var first = packetsVia.First();
+                    link.ReceivePacket(first);
+                    packetsVia.Remove(first);
+                    packetsVia.ForEach(p => addToQueue(p, queue));
+                }
             }
         }
 
         public void PerformSimulationStep()
         {
-            queue.IncreasePacketsLatency();
-            queue.DropOutdatedPackets();
-
-            //take last element from queue
-            Packet packet = queue.GetPacketFromQueue();
-
-            if (packet != null)
+            if (receivedPackets.Count > 3)
             {
-                //check if element's destination id is equal to this node's id
-                if (packet.destinationId == Id) //if yes hand it over to the local port
-                {
-                    localPort.ReceivePacket(packet);
-                }
-                else //if not
-                {
-                    //map it on forwarding table &
-                    //send it using ReceivePacket method on a proper egress link
-                    this.OutgoingLink(packet.sourceId, packet.destinationId).ReceivePacket(packet);
-                }
+                throw new InvalidOperationException("Ingrss packets - more than 3. Weird.");
+            }
+
+            
+            var localPackets = receivedPackets.Where(p => p.destinationId == this.Id).ToList();
+            localPackets.ForEach(lp => { this.localPort.ReceivePacket(lp); receivedPackets.Remove(lp); });
+
+            HandleTransmissionVia(egressHorizontalLink);
+            HandleTransmissionVia(egressVerticalLink);
+
+            receivedPackets.Clear();
+
+            foreach (var queue in queues.Values)
+            {
+                queue.IncreasePacketsLatency();
+                queue.DropOutdatedPackets();
             }
         }
 
@@ -111,5 +161,7 @@ namespace TOPT.NetworkSimulator.Engine
                 throw new NotImplementedException();
             }
         }
+
+        
     }
 }

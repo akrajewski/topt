@@ -33,11 +33,15 @@ namespace TOPT.NetworkSimulator.Engine
                 {
                     n.PerformSimulationStep();
                 }
-
+                
                 foreach (Link l in network.networkLinks)
                 {
                     l.PerformSimulationStep();
                 }
+
+          
+
+                
             } while (network.packetsInNetwork != 0);
         }
     }

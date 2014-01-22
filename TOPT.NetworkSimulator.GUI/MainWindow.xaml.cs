@@ -60,15 +60,17 @@ namespace TOPT.NetworkSimulator.GUI
 
         }
 
-       
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           
+            
+
+
             var networkSize = int.Parse(this.networkSize.Text);
             var queueSize = int.Parse(this.queueSize.Text);
 
-            var packetsPerSecText = this.packetsPerSecond.Text.Replace(".", ",") ;
+            var packetsPerSecText = this.packetsPerSecond.Text;//.Replace(".", ",") ;
 
             var packetsPerSec = double.Parse(packetsPerSecText);
             var packetCount = int.Parse(this.packetCount.Text);
@@ -140,7 +142,7 @@ namespace TOPT.NetworkSimulator.GUI
             var textBox = sender as TextBox;
             try
             {
-                textBox.Text = textBox.Text.Replace(" ", string.Empty);
+                textBox.Text = textBox.Text.Replace(" ", string.Empty); 
                 Double.Parse(textBox.Text);
                 Int32.Parse(textBox.Text);
             }
@@ -149,6 +151,20 @@ namespace TOPT.NetworkSimulator.GUI
                 SetDefaultValue(textBox);
             }
 
+        }
+
+        private new void LostFocus_double(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            try
+            {
+                textBox.Text = textBox.Text.Replace(" ", string.Empty);
+                Double.Parse(textBox.Text);
+            }
+            catch (FormatException ex)
+            {
+                SetDefaultValue(textBox);
+            }
         }
 
     }
